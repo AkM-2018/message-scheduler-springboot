@@ -1,18 +1,18 @@
-package com.akm.messagescheduler.service.impl;
+package com.akm.messagescheduler.utils;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimerTask;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.akm.messagescheduler.entity.Message;
 import com.akm.messagescheduler.repository.MessageRepository;
-import com.akm.messagescheduler.service.MessageScheduleSendService;
 import com.akm.messagescheduler.service.MessageService;
 import com.google.gson.Gson;
 
@@ -22,14 +22,14 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-@Service
-public class MessageScheduleSendServiceImpl implements MessageScheduleSendService {
-
-    @Autowired
-    MessageRepository messageRepository;
+@Component
+public class ScheduleSend extends TimerTask {
 
     @Autowired
     MessageService messageService;
+
+    @Autowired
+    MessageRepository messageRepository;
 
     @Value("${api.endpoint}")
     private String GupshupApiEndpoint;
@@ -46,7 +46,8 @@ public class MessageScheduleSendServiceImpl implements MessageScheduleSendServic
     private final OkHttpClient client = new OkHttpClient();
     private final Gson gson = new Gson();
 
-    public void sendScheduledMessage() {
+    @Override
+    public void run() {
         List<Message> messageList = messageRepository.findPendingMessages();
         System.out.println("Called sendScheduleMessage with: " + messageList.size() + " messages");
         for (Message message : messageList) {
@@ -85,5 +86,4 @@ public class MessageScheduleSendServiceImpl implements MessageScheduleSendServic
             e.printStackTrace();
         }
     }
-
 }

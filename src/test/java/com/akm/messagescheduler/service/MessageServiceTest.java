@@ -25,8 +25,6 @@ import com.akm.messagescheduler.error.InvalidDateException;
 import com.akm.messagescheduler.error.InvalidReceiverNumberException;
 import com.akm.messagescheduler.repository.MessageRepository;
 
-import okhttp3.OkHttpClient;
-
 @SpringBootTest
 public class MessageServiceTest {
 
@@ -35,9 +33,6 @@ public class MessageServiceTest {
 
 	@MockBean
 	MessageRepository messageRepository;
-
-	@MockBean
-	OkHttpClient client;
 
 	private Message message;
 

@@ -32,12 +32,6 @@ public class MessageScheduleSendServiceImpl implements MessageScheduleSendServic
     @Autowired
     MessageService messageService;
 
-    @Autowired
-    OkHttpClient client;
-
-    @Autowired
-    Gson gson;
-
     @Value("${api.endpoint}")
     private String GupshupApiEndpoint;
 
@@ -49,6 +43,9 @@ public class MessageScheduleSendServiceImpl implements MessageScheduleSendServic
 
     @Value("${api.source.name}")
     private String apiSourceName;
+
+    private final OkHttpClient client = new OkHttpClient();
+    private final Gson gson = new Gson();
 
     @Scheduled(fixedRate = 10000L)
     public void sendScheduledMessage() {
